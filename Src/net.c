@@ -1,4 +1,5 @@
 #include "net.h"
+#include "Driver_USART.h"
 //-----------------------------------------------
 uint8_t destinationIP[4];
 uint16_t destinationPort; //port_dest;
@@ -386,3 +387,12 @@ void UART6_RxCpltCallback(void)
 	 USARTdrv->Receive((uint8_t*)str, 1);   
 }
 //-----------------------------------------------
+void USART_Driver_Config(void)
+{
+	   USARTdrv->PowerControl(ARM_POWER_FULL);
+    USARTdrv->Control(ARM_USART_MODE_ASYNCHRONOUS |
+                      ARM_USART_DATA_BITS_8 |
+                      ARM_USART_PARITY_NONE |
+                      ARM_USART_STOP_BITS_1 |
+                      ARM_USART_FLOW_CONTROL_NONE, 4800);
+}

@@ -3,26 +3,26 @@
 #include "lwip.h"
 #include "net.h"
 #include "Driver_USART.h"
+#include "Driver_ETH.h"
+#include "Driver_ETH_MAC.h"
+#include "Driver_ETH_PHY.h"
 
 extern struct netif gnetif;
 extern char str[30];
-
-void SystemClock_Config(void);
-static void USART6_UART_Init(void);
 
 int main(void)
 {
   ETH_GPIO_Config();
 	ETH_MACDMA_Config();
+	USART_Driver_Config();
   net_ini();
-
+ 
   while (1)
   {
     ethernetif_input(&gnetif);
     sys_check_timeouts();
   }
 }
-
 
 void ETH_GPIO_Config(void) {
 	/* Enable SYSCFG clock */
@@ -98,6 +98,8 @@ void ETH_MACDMA_Config(void) {
 	ETH_InitStructure.ETH_UnicastFramesFilter = ETH_UnicastFramesFilter_Perfect;
 #ifdef CHECKSUM_BY_HARDWARE
 	ETH_InitStructure.ETH_ChecksumOffload = ETH_ChecksumOffload_Enable;
+	
+	
 #endif
 
 	/*------------------------   DMA   -----------------------------------*/  
@@ -120,8 +122,6 @@ void ETH_MACDMA_Config(void) {
 	/* Configure Ethernet */
 	EthStatus = ETH_Init(&ETH_InitStructure, ETHERNET_PHY_ADDRESS);
 }
-
-
 
 void _Error_Handler(char * file, int line)
 {
