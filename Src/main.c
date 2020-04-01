@@ -122,13 +122,6 @@ void ETH_MACDMA_Config(void) {
 }
 
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  if(huart==&huart6)
-  {
-    UART6_RxCpltCallback();
-  }
-}
 
 void _Error_Handler(char * file, int line)
 {
